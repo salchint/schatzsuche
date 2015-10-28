@@ -3,6 +3,22 @@
 #include <iostream>
 #include <string>
 #include <vector>
+#include <cstdio>
+#include <cstdlib>
+
+#ifdef WIN32
+# include "windows.h"
+#else
+#endif
+
+void sleepMs(unsigned int millisecs)
+{
+#ifdef WIN32
+  Sleep(millisecs);
+#else
+  usleep(millisecs * 1000);
+#endif
+}
 
 class Screen
 {
@@ -10,20 +26,61 @@ private:
   size_t width;
   size_t hight;
   size_t padding;
-
-  std::string& umlaute(std::string text)
+  
+  std::string& breakLines(const char* text)
   {
     using namespace std;
-    vector<size_t> positions;
-    string::iterator it = text.begin()
-    positions.push_back( text.find('ü'
-    //string tmp = text.replace(
+    string buffer (text);
+    this->breakLines(buffer);
+  }
 
+  std::string& breakLines(std::string& text)
+  {
+    using namespace std;
+    string::size_type offset = 0;
+
+    if(text.length() + 2*this->padding < this->width)
+    {
+      text.insert(0, this->padding, ' ');
+      return text;
+    }
+
+    for(;offset != string::npos;)
+    {
+      offset = text.rfind(' ', offset + this->width - 2*this->padding);
+      if(string::npos != offset)
+      {
+        text.replace(offset, 1, "\n");
+        text.insert(offset + 1, this->padding, ' ');
+      }
+      if(text.length() < offset + this->width - 2*this->padding)
+      {
+        break;
+      }
+    }
+
+    text.insert(0, this->padding, ' ');
+    return text;
+  }
+
+  void typeDelayed(std::string text)
+  {
+    using namespace std;
+
+    for(string::iterator it=text.begin(); it!=text.end(); ++it)
+    {
+      sleepMs(100);
+      cout << *it;
+      if('.' == *it)
+      {
+        sleepMs(400);
+      }
+    }
   }
 
 public:
-  Screen() : width(110), hight(55)
-    , padding(6)
+  Screen() : width(110), hight(85)
+    , padding(4)
   {
   }
 
@@ -31,9 +88,27 @@ public:
   {
   }
 
+  void promptToContinue()
+  {
+    using namespace std;
+
+    for(int i=0; i<0.3*this->hight; ++i) cout << endl;
+    string spacing;
+    spacing.insert(0, this->width - 50, ' ');
+    cout << spacing;
+    string text ("Druecke ENTER fuer Weiter");
+    this->typeDelayed(this->breakLines(text));
+    
+    getchar();
+  }
+
   void print(std::string text)
   {
     using namespace std;
-    cout << text << endl;
+
+    for(int i=0; i<0.3*this->hight; ++i) cout << endl;
+    this->typeDelayed(this->breakLines(text));
+
+    this->promptToContinue();
   }
 };
