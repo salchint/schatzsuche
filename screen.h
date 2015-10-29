@@ -9,6 +9,7 @@
 #ifdef WIN32
 # include "windows.h"
 #else
+# include <unistd.h>
 #endif
 
 void sleepMs(unsigned int millisecs)
@@ -71,6 +72,7 @@ private:
     {
       sleepMs(100);
       cout << *it;
+      cout.flush();
       if('.' == *it || '!' == *it || '?' == *it)
       {
         sleepMs(400);
@@ -79,7 +81,7 @@ private:
   }
 
 public:
-  Screen() : width(110), hight(35)
+  Screen() : width(110), hight(45)
     , padding(4)
   {
   }

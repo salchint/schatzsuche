@@ -1,0 +1,4 @@
+[Project]
+Name=schatzsuche
+Manager=KDevCMakeManager
+VersionControl=kdevgit

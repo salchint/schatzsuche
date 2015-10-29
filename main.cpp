@@ -1,7 +1,7 @@
 #include <string>
 #include "screen.h"
 
-void main()
+int main()
 {
   using namespace std;
 
@@ -41,4 +41,6 @@ void main()
   screen.printParagraph(job3);
 
   screen.promptToContinue();
+  
+  return 0;
 }
