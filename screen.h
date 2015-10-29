@@ -71,7 +71,7 @@ private:
     {
       sleepMs(100);
       cout << *it;
-      if('.' == *it)
+      if('.' == *it || '!' == *it || '?' == *it)
       {
         sleepMs(400);
       }
@@ -79,7 +79,7 @@ private:
   }
 
 public:
-  Screen() : width(110), hight(85)
+  Screen() : width(110), hight(35)
     , padding(4)
   {
   }
@@ -88,15 +88,22 @@ public:
   {
   }
 
+  void clear()
+  {
+    using namespace std;
+
+    for(size_t i=0; i<this->hight; ++i) cout << endl;
+  }
+
   void promptToContinue()
   {
     using namespace std;
 
     for(int i=0; i<0.3*this->hight; ++i) cout << endl;
     string spacing;
-    spacing.insert(0, this->width - 50, ' ');
+    spacing.insert(0, this->width - 15, ' ');
     cout << spacing;
-    string text ("Druecke ENTER fuer Weiter");
+    string text ("Druecke ENTER");
     this->typeDelayed(this->breakLines(text));
     
     getchar();
@@ -106,9 +113,17 @@ public:
   {
     using namespace std;
 
-    for(int i=0; i<0.3*this->hight; ++i) cout << endl;
+    this->clear();
     this->typeDelayed(this->breakLines(text));
 
     this->promptToContinue();
+  }
+
+  void printParagraph(std::string text)
+  {
+    using namespace std;
+
+    for(int i=0; i<3; ++i) cout << endl;
+    this->typeDelayed(this->breakLines(text));
   }
 };
