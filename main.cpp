@@ -8,6 +8,9 @@ int main()
   Screen screen;
   screen.clear();
 
+  screen.printParagraph("");
+  screen.promptToContinue();
+    
   string begin ("Die Schatzsuche kann beginnen :)");
   screen.print(begin);
 

@@ -107,8 +107,14 @@ public:
     cout << spacing;
     string text ("Druecke ENTER");
     this->typeDelayed(this->breakLines(text));
-    
+
+    /**/
+    char buffer[1000];
+    *buffer = '\0';
+    fgets(buffer, sizeof(buffer), stdin);
+    /*/
     getchar();
+    /**/
   }
 
   void print(std::string text)
